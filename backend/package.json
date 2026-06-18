@@ -1,14 +1,14 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Doctor-Appointment-Booking-System",
+  "description": "MediConnect",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js"
   },
-  "author": "Singireddy Amulya Reddy",
+  "author": "RaghavaPriya",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",

@@ -9,7 +9,10 @@ import stripe from "stripe";
 import razorpay from "razorpay";
 
 // Gateway Initialize
-const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
+let stripeInstance = null;
+if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY.trim() !== "") {
+  stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
+}
 const razorpayInstance = new razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_KEY_SECRET,
@@ -57,7 +60,12 @@ const registerUser = async (req, res) => {
 
     res.json({ success: true, token });
   } catch (error) {
-    console.log(error);
+    console.log("❌ Registration Error:", {
+      message: error.message,
+      code: error.code,
+      name: error.name,
+      stack: error.stack
+    });
     res.json({ success: false, message: error.message });
   }
 };
@@ -287,6 +295,9 @@ const verifyRazorpay = async (req, res) => {
 // API to make payment of appointment using Stripe
 const paymentStripe = async (req, res) => {
   try {
+    if (!stripeInstance) {
+      return res.json({ success: false, message: "Stripe not configured" });
+    }
     const { appointmentId } = req.body;
     const { origin } = req.headers;
 
@@ -330,6 +341,9 @@ const paymentStripe = async (req, res) => {
 
 const verifyStripe = async (req, res) => {
   try {
+    if (!stripeInstance) {
+      return res.json({ success: false, message: "Stripe not configured" });
+    }
     const { appointmentId, success } = req.body;
 
     if (success === "true") {
