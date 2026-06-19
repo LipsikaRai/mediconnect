@@ -97,7 +97,7 @@ const loginUser = async (req, res) => {
 // API to get user profile data
 const getProfile = async (req, res) => {
   try {
-    const { userId } = req.userId;
+    const userId = req.userId;
     const userData = await userModel.findById(userId).select("-password");
 
     res.json({ success: true, userData });
@@ -110,7 +110,8 @@ const getProfile = async (req, res) => {
 // API to update user profile
 const updateProfile = async (req, res) => {
   try {
-    const { userId, name, phone, address, dob, gender } = req.body;
+    const userId = req.userId;
+    const { name, phone, address, dob, gender } = req.body;
     const imageFile = req.file;
 
     if (!name || !phone || !dob || !gender) {
@@ -145,7 +146,8 @@ const updateProfile = async (req, res) => {
 // API to book appointment
 const bookAppointment = async (req, res) => {
   try {
-    const { userId, docId, slotDate, slotTime } = req.body;
+     const userId = rreq.body.userId
+    const {docId, slotDate, slotTime } = req.body;
     const docData = await doctorModel.findById(docId).select("-password");
 
     if (!docData.available) {
@@ -197,7 +199,8 @@ const bookAppointment = async (req, res) => {
 // API to cancel appointment
 const cancelAppointment = async (req, res) => {
   try {
-    const { userId, appointmentId } = req.body;
+    const userId = req.userId;
+const { appointmentId } = req.body;
     const appointmentData = await appointmentModel.findById(appointmentId);
 
     // verify appointment user
@@ -232,7 +235,7 @@ const cancelAppointment = async (req, res) => {
 // API to get user appointments for frontend my-appointments page
 const listAppointment = async (req, res) => {
   try {
-    const { userId } = req.body;
+   const userId = req.userId;
     const appointments = await appointmentModel.find({ userId });
 
     res.json({ success: true, appointments });
