@@ -146,7 +146,7 @@ const updateProfile = async (req, res) => {
 // API to book appointment
 const bookAppointment = async (req, res) => {
   try {
-     const userId = rreq.body.userId
+  const userId = req.userId;
     const {docId, slotDate, slotTime } = req.body;
     const docData = await doctorModel.findById(docId).select("-password");
 
